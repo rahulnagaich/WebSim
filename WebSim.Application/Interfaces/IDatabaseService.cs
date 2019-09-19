@@ -6,5 +6,7 @@ namespace WebSim.Application.Interfaces
     public interface IDatabaseService
     {
         DbSet<User> Users { get; set; }
+
+       int Save();
     }
 }

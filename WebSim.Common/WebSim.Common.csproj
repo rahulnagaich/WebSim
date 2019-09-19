@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WebSim.Domain\WebSim.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
