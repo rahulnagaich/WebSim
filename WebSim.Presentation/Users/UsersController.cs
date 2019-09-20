@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using WebSim.Application.Users.Commands.CreateUser;
 using WebSim.Application.Users.Queries.GetUsersList;
 
@@ -25,21 +22,21 @@ namespace WebSim.Presentation.Users
             _usersListQuery = usersListQuery;
         }
 
-        [Route("users")]
+        [Route("list")]
         [HttpGet]
-       // [Authorize(Policy = "CanViewUser")]
+        // [Authorize(Policy = "CanViewUser")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult GetUsers(int pageNumber=1, int pageSize=10, string searchString = "", string sortOrder= "true")
+        public IActionResult GetUsers(int page = 1, int pageSize = 10, string search = "", string sortBy = "", string sortOrder = "desc")
         {
-            var users = _usersListQuery.Execute(pageNumber, pageSize, searchString, sortOrder);
-            
+            var users = _usersListQuery.Execute(page, pageSize, search, sortBy, sortOrder);
+
             return Ok(users);
         }
 
-        [Route("CreateUser")]
+        [Route("create")]
         [HttpGet]
-       // [Authorize(Policy = "CanAddUser")]
+        // [Authorize(Policy = "CanAddUser")]
         public IActionResult CreateUser()
         {
             //var roles = _getAllRolesQuery.Execute();
@@ -52,8 +49,8 @@ namespace WebSim.Presentation.Users
             return Ok();
         }
 
-        [HttpPost("CreateUser")]
-       // [Authorize(Policy = "CanAddUser")]
+        [HttpPost("create")]
+        // [Authorize(Policy = "CanAddUser")]
         [ProducesResponseType(201)]
         [ProducesResponseType(404)]
         public IActionResult CreateUser([FromBody]CreateUserModel model)

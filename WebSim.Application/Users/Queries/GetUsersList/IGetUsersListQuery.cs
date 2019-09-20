@@ -2,6 +2,6 @@
 {
     public interface IGetUsersListQuery
     {
-        UserListItemModel Execute(int pageNumber, int pageSize, string searchString, string sortOrder);
+        UserListItemModel Execute(int pageNumber, int pageSize, string searchString, string sortBy, string sortOrder);
     }
 }

@@ -12,7 +12,7 @@ namespace WebSim.Application.Users.Queries.GetUsersList
             _databaseService = databaseService;
         }
 
-        public UserListItemModel Execute(int pageNumber, int pageSize, string searchString, string sortOrder)
+        public UserListItemModel Execute(int pageNumber, int pageSize, string searchString, string sortBy, string sortOrder)
         {
             int totalCount = 0;
 
@@ -24,7 +24,8 @@ namespace WebSim.Application.Users.Queries.GetUsersList
                     FirstName = u.FirstName,
                     LastName = u.LastName,
                     Email = u.Email,
-                    IsStatic = u.IsStatic
+                    IsStatic = u.IsStatic,
+                    CreatedOn = u.CreatedOn
                 });
 
             if (!string.IsNullOrEmpty(searchString))
@@ -33,6 +34,11 @@ namespace WebSim.Application.Users.Queries.GetUsersList
             }
 
             totalCount = users.Count();
+
+            if (!string.IsNullOrEmpty(sortOrder) && !string.IsNullOrEmpty(sortBy))
+            {
+                sortOrder += sortBy == "asc" ? "_asc" : "_desc";
+            }
 
             switch (sortOrder)
             {
@@ -57,18 +63,17 @@ namespace WebSim.Application.Users.Queries.GetUsersList
                     break;
 
                 default:
-                    users = users.OrderBy(s => s.FirstName);
+                    users = users.OrderByDescending(s => s.CreatedOn);
                     break;
             }
 
             users = users.Skip((pageNumber - 1) * pageSize).Take(pageSize);
-            
+
             var listItemModel = new UserListItemModel()
             {
                 List = users.ToList(),
                 TotalCount = totalCount
             };
-
 
             return listItemModel;
         }

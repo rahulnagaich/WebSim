@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WebSim.Application.Users.Queries.GetUsersList
 {
@@ -20,5 +21,7 @@ namespace WebSim.Application.Users.Queries.GetUsersList
         public string Email { get; set; }
 
         public bool IsStatic { get; set; }
+
+        public  DateTime CreatedOn { get; set; }
     }
 }
