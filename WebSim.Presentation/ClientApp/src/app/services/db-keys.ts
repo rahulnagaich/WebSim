@@ -1,13 +1,7 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DBkeys {
-
   public static readonly CURRENT_USER = 'current_user';
   public static readonly USER_PERMISSIONS = 'user_permissions';
 

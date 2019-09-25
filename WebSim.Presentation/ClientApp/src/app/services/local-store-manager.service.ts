@@ -1,8 +1,3 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
@@ -31,7 +26,6 @@ export class LocalStoreManager {
       'removeFromSessionStorage',
       'clearAllSessionsStorage'
     ];
-
 
   public initialiseStorageSyncListener() {
     if (LocalStoreManager.syncListenerInitialised == true) {
@@ -185,7 +179,6 @@ export class LocalStoreManager {
         localStorage.removeItem('setSessionStorage');
       }
     } else if (event.key == 'setSessionStorage') {
-
       if (!this.syncKeys.length) {
         this.loadSyncKeys();
       }
@@ -193,7 +186,6 @@ export class LocalStoreManager {
       // console.info("Set => Key: Transfer setSessionStorage" + ",  data: " + JSON.stringify(data));
 
       for (const key in data) {
-
         if (this.syncKeysContains(key)) {
           this.sessionStorageSetItem(key, JSON.parse(data[key]));
         }
@@ -201,14 +193,12 @@ export class LocalStoreManager {
 
       this.onInit();
     } else if (event.key == 'addToSessionStorage') {
-
       const data = JSON.parse(event.newValue);
 
       // console.warn("Set => Key: Transfer addToSessionStorage" + ",  data: " + JSON.stringify(data));
 
       this.addToSessionStorageHelper(data.data, data.key);
     } else if (event.key == 'removeFromSessionStorage') {
-
       this.removeFromSessionStorageHelper(event.newValue);
     } else if (event.key == 'clearAllSessionsStorage' && sessionStorage.length) {
       this.clearInstanceSessionStorage();
@@ -246,7 +236,6 @@ export class LocalStoreManager {
   }
 
   private removeFromSessionStorageHelper(keyToRemove: string) {
-
     sessionStorage.removeItem(keyToRemove);
     this.removeFromSyncKeysHelper(keyToRemove);
   }
@@ -262,7 +251,6 @@ export class LocalStoreManager {
   }
 
   private syncKeysContains(key: string) {
-
     return this.syncKeys.some(x => x == key);
   }
 

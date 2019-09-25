@@ -1,8 +1,3 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AlertService, DialogType, MessageSeverity } from '../../services/alert.service';
 import { Subscription, Observable, fromEvent, of, merge } from 'rxjs';
@@ -10,15 +5,12 @@ import { map, distinctUntilChanged } from 'rxjs/operators';
 
 require('chart.js');
 
-
-
 @Component({
   selector: 'statistics-demo',
   templateUrl: './statistics-demo.component.html',
   styleUrls: ['./statistics-demo.component.scss']
 })
 export class StatisticsDemoComponent implements OnInit, OnDestroy {
-
   chartData = [
     { data: [65, 59, 80, 81, 56, 55], label: 'Series A' },
     { data: [28, 48, 40, 19, 86, 27], label: 'Series B' },
@@ -66,11 +58,8 @@ export class StatisticsDemoComponent implements OnInit, OnDestroy {
   windowWidth$: Observable<number>;
   windowWidthSub: Subscription;
 
-
   constructor(private alertService: AlertService) {
-
   }
-
 
   ngOnInit() {
     this.timerReference = setInterval(() => this.randomize(), 5000);
@@ -86,8 +75,6 @@ export class StatisticsDemoComponent implements OnInit, OnDestroy {
     clearInterval(this.timerReference);
     this.windowWidthSub.unsubscribe();
   }
-
-
 
   randomize(): void {
     const _chartData = new Array(this.chartData.length);
@@ -115,13 +102,10 @@ export class StatisticsDemoComponent implements OnInit, OnDestroy {
   }
 
   configure(response: boolean, value?: string) {
-
     if (response) {
-
       this.alertService.showStickyMessage('Simulating...', '', MessageSeverity.wait);
 
       setTimeout(() => {
-
         this.alertService.resetStickyMessage();
         this.alertService.showMessage('Demo', `Your settings was successfully configured to \"${value}\"`, MessageSeverity.success);
       }, 2000);

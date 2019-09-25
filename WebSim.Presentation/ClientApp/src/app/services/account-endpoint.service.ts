@@ -1,8 +1,3 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -12,10 +7,8 @@ import { AuthService } from './auth.service';
 import { EndpointBase } from './endpoint-base.service';
 import { ConfigurationService } from './configuration.service';
 
-
 @Injectable()
 export class AccountEndpoint extends EndpointBase {
-
   private readonly _usersUrl: string = '/api/account/users';
   private readonly _userByUserNameUrl: string = '/api/account/users/username';
   private readonly _currentUserUrl: string = '/api/account/users/me';
@@ -34,11 +27,9 @@ export class AccountEndpoint extends EndpointBase {
   get roleByRoleNameUrl() { return this.configurations.baseUrl + this._roleByRoleNameUrl; }
   get permissionsUrl() { return this.configurations.baseUrl + this._permissionsUrl; }
 
-
   constructor(private configurations: ConfigurationService, http: HttpClient, authService: AuthService) {
     super(http, authService);
   }
-
 
   getUserEndpoint<T>(userId?: string): Observable<T> {
     const endpointUrl = userId ? `${this.usersUrl}/${userId}` : this.currentUserUrl;
@@ -49,7 +40,6 @@ export class AccountEndpoint extends EndpointBase {
       }));
   }
 
-
   getUserByUserNameEndpoint<T>(userName: string): Observable<T> {
     const endpointUrl = `${this.userByUserNameUrl}/${userName}`;
 
@@ -58,7 +48,6 @@ export class AccountEndpoint extends EndpointBase {
         return this.handleError(error, () => this.getUserByUserNameEndpoint(userName));
       }));
   }
-
 
   getUsersEndpoint<T>(page?: number, pageSize?: number): Observable<T> {
     const endpointUrl = page && pageSize ? `${this.usersUrl}/${page}/${pageSize}` : this.usersUrl;
@@ -69,9 +58,7 @@ export class AccountEndpoint extends EndpointBase {
       }));
   }
 
-
   getNewUserEndpoint<T>(userObject: any): Observable<T> {
-
     return this.http.post<T>(this.usersUrl, JSON.stringify(userObject), this.requestHeaders).pipe<T>(
       catchError(error => {
         return this.handleError(error, () => this.getNewUserEndpoint(userObject));
@@ -109,9 +96,7 @@ export class AccountEndpoint extends EndpointBase {
       }));
   }
 
-
   getUserPreferencesEndpoint<T>(): Observable<T> {
-
     return this.http.get<T>(this.currentUserPreferencesUrl, this.requestHeaders).pipe<T>(
       catchError(error => {
         return this.handleError(error, () => this.getUserPreferencesEndpoint());
@@ -143,10 +128,6 @@ export class AccountEndpoint extends EndpointBase {
       }));
   }
 
-
-
-
-
   getRoleEndpoint<T>(roleId: string): Observable<T> {
     const endpointUrl = `${this.rolesUrl}/${roleId}`;
 
@@ -156,7 +137,6 @@ export class AccountEndpoint extends EndpointBase {
       }));
   }
 
-
   getRoleByRoleNameEndpoint<T>(roleName: string): Observable<T> {
     const endpointUrl = `${this.roleByRoleNameUrl}/${roleName}`;
 
@@ -165,8 +145,6 @@ export class AccountEndpoint extends EndpointBase {
         return this.handleError(error, () => this.getRoleByRoleNameEndpoint(roleName));
       }));
   }
-
-
 
   getRolesEndpoint<T>(page?: number, pageSize?: number): Observable<T> {
     const endpointUrl = page && pageSize ? `${this.rolesUrl}/${page}/${pageSize}` : this.rolesUrl;
@@ -178,7 +156,6 @@ export class AccountEndpoint extends EndpointBase {
   }
 
   getNewRoleEndpoint<T>(roleObject: any): Observable<T> {
-
     return this.http.post<T>(this.rolesUrl, JSON.stringify(roleObject), this.requestHeaders).pipe<T>(
       catchError(error => {
         return this.handleError(error, () => this.getNewRoleEndpoint(roleObject));
@@ -203,9 +180,7 @@ export class AccountEndpoint extends EndpointBase {
       }));
   }
 
-
   getPermissionsEndpoint<T>(): Observable<T> {
-
     return this.http.get<T>(this.permissionsUrl, this.requestHeaders).pipe<T>(
       catchError(error => {
         return this.handleError(error, () => this.getPermissionsEndpoint());

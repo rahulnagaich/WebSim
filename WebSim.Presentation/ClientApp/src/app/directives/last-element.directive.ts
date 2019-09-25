@@ -1,25 +1,18 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { Directive, Input, Output, EventEmitter } from '@angular/core';
 
-
 @Directive({
-    selector: '[lastElement]'
+  selector: '[lastElement]'
 })
 export class LastElementDirective {
-    @Input()
-    set lastElement(isLastElement: boolean) {
-
-        if (isLastElement) {
-            setTimeout(() => {
-                this.lastFunction.emit();
-            });
-        }
+  @Input()
+  set lastElement(isLastElement: boolean) {
+    if (isLastElement) {
+      setTimeout(() => {
+        this.lastFunction.emit();
+      });
     }
+  }
 
-    @Output()
-    lastFunction = new EventEmitter();
+  @Output()
+  lastFunction = new EventEmitter();
 }

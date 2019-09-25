@@ -1,8 +1,3 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { Injectable } from '@angular/core';
 import { OAuthStorage } from 'angular-oauth2-oidc';
 
@@ -10,7 +5,6 @@ import { LocalStoreManager } from '../services/local-store-manager.service';
 
 @Injectable()
 export class AuthStorage implements OAuthStorage {
-
   constructor(private localStorage: LocalStoreManager) {
   }
 

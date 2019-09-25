@@ -1,17 +1,10 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
-
 
 import { fadeInOut } from '../../services/animations';
 import { BootstrapTabDirective } from '../../directives/bootstrap-tab.directive';
 import { AccountService } from '../../services/account.service';
 import { Permission } from '../../models/permission.model';
-
 
 @Component({
   selector: 'settings',
@@ -20,7 +13,6 @@ import { Permission } from '../../models/permission.model';
   animations: [fadeInOut]
 })
 export class SettingsComponent implements OnInit, OnDestroy {
-
   isProfileActivated = true;
   isPreferencesActivated = false;
   isUsersActivated = false;
@@ -33,19 +25,15 @@ export class SettingsComponent implements OnInit, OnDestroy {
   readonly usersTab = 'users';
   readonly rolesTab = 'roles';
 
-
   @ViewChild('tab', { static: true })
   tab: BootstrapTabDirective;
-
 
   constructor(private router: Router, private route: ActivatedRoute, private accountService: AccountService) {
   }
 
-
   ngOnInit() {
     this.fragmentSubscription = this.route.fragment.subscribe(anchor => this.showContent(anchor));
   }
-
 
   ngOnDestroy() {
     this.fragmentSubscription.unsubscribe();
@@ -64,9 +52,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.tab.show(`#${anchor || this.profileTab}Tab`);
   }
 
-
   isFragmentEquals(fragment1: string, fragment2: string) {
-
     if (fragment1 == null) {
       fragment1 = '';
     }
@@ -78,7 +64,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
     return fragment1.toLowerCase() == fragment2.toLowerCase();
   }
 
-
   onShowTab(event) {
     const activeTab = event.target.hash.split('#', 2).pop();
 
@@ -89,7 +74,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
     this.router.navigate([], { fragment: activeTab });
   }
-
 
   get canViewUsers() {
     return this.accountService.userHasPermission(Permission.viewUsersPermission);

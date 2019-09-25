@@ -1,8 +1,3 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
@@ -25,12 +20,10 @@ interface UserConfiguration {
 
 @Injectable()
 export class ConfigurationService {
-
   constructor(
     private localStorage: LocalStoreManager,
     private translationService: AppTranslationService,
     private themeManager: ThemeManager) {
-
     this.loadLocalChanges();
   }
 
@@ -43,7 +36,6 @@ export class ConfigurationService {
     return this._language || ConfigurationService.defaultLanguage;
   }
 
-
   set themeId(value: number) {
     value = +value;
     this._themeId = value;
@@ -54,7 +46,6 @@ export class ConfigurationService {
     return this._themeId || ConfigurationService.defaultThemeId;
   }
 
-
   set homeUrl(value: string) {
     this._homeUrl = value;
     this.saveToLocalStore(value, DBkeys.HOME_URL);
@@ -62,7 +53,6 @@ export class ConfigurationService {
   get homeUrl() {
     return this._homeUrl || ConfigurationService.defaultHomeUrl;
   }
-
 
   set showDashboardStatistics(value: boolean) {
     this._showDashboardStatistics = value;
@@ -72,7 +62,6 @@ export class ConfigurationService {
     return this._showDashboardStatistics != null ? this._showDashboardStatistics : ConfigurationService.defaultShowDashboardStatistics;
   }
 
-
   set showDashboardNotifications(value: boolean) {
     this._showDashboardNotifications = value;
     this.saveToLocalStore(value, DBkeys.SHOW_DASHBOARD_NOTIFICATIONS);
@@ -81,7 +70,6 @@ export class ConfigurationService {
     return this._showDashboardNotifications != null ? this._showDashboardNotifications : ConfigurationService.defaultShowDashboardNotifications;
   }
 
-
   set showDashboardTodo(value: boolean) {
     this._showDashboardTodo = value;
     this.saveToLocalStore(value, DBkeys.SHOW_DASHBOARD_TODO);
@@ -89,7 +77,6 @@ export class ConfigurationService {
   get showDashboardTodo() {
     return this._showDashboardTodo != null ? this._showDashboardTodo : ConfigurationService.defaultShowDashboardTodo;
   }
-
 
   set showDashboardBanner(value: boolean) {
     this._showDashboardBanner = value;
@@ -127,10 +114,7 @@ export class ConfigurationService {
   private onConfigurationImported: Subject<boolean> = new Subject<boolean>();
   configurationImported$ = this.onConfigurationImported.asObservable();
 
-
-
   private loadLocalChanges() {
-
     if (this.localStorage.exists(DBkeys.LANGUAGE)) {
       this._language = this.localStorage.getDataObject<string>(DBkeys.LANGUAGE);
       this.translationService.changeLanguage(this._language);
@@ -138,14 +122,12 @@ export class ConfigurationService {
       this.resetLanguage();
     }
 
-
     if (this.localStorage.exists(DBkeys.THEME_ID)) {
       this._themeId = this.localStorage.getDataObject<number>(DBkeys.THEME_ID);
       this.themeManager.installTheme(this.themeManager.getThemeByID(this._themeId));
     } else {
       this.resetTheme();
     }
-
 
     if (this.localStorage.exists(DBkeys.HOME_URL)) {
       this._homeUrl = this.localStorage.getDataObject<string>(DBkeys.HOME_URL);
@@ -168,14 +150,11 @@ export class ConfigurationService {
     }
   }
 
-
   private saveToLocalStore(data: any, key: string) {
     setTimeout(() => this.localStorage.savePermanentData(data, key));
   }
 
-
   public import(jsonValue: string) {
-
     this.clearLocalChanges();
 
     if (jsonValue) {
@@ -213,9 +192,7 @@ export class ConfigurationService {
     this.onConfigurationImported.next();
   }
 
-
   public export(changesOnly = true): string {
-
     const exportValue: UserConfiguration = {
       language: changesOnly ? this._language : this.language,
       themeId: changesOnly ? this._themeId : this.themeId,
@@ -228,7 +205,6 @@ export class ConfigurationService {
 
     return JSON.stringify(exportValue);
   }
-
 
   public clearLocalChanges() {
     this._language = null;
@@ -250,7 +226,6 @@ export class ConfigurationService {
     this.resetLanguage();
     this.resetTheme();
   }
-
 
   private resetLanguage() {
     const language = this.translationService.useBrowserLanguage();

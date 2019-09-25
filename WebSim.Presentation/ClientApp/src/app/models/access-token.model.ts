@@ -1,10 +1,4 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { PermissionValues } from './permission.model';
-
 
 export interface AccessToken {
   nbf: number;

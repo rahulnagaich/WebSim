@@ -1,15 +1,8 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { Injectable } from '@angular/core';
 import { HttpResponseBase } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 
 import { Utilities } from '../services/utilities';
-
-
 
 @Injectable()
 export class AlertService {
@@ -18,13 +11,10 @@ export class AlertService {
 
   private loadingMessageTimeoutId: any;
 
-
-
   showDialog(message: string);
   showDialog(message: string, type: DialogType, okCallback: (val?: any) => any);
   showDialog(message: string, type: DialogType, okCallback?: (val?: any) => any, cancelCallback?: () => any, okLabel?: string, cancelLabel?: string, defaultValue?: string);
   showDialog(message: string, type?: DialogType, okCallback?: (val?: any) => any, cancelCallback?: () => any, okLabel?: string, cancelLabel?: string, defaultValue?: string) {
-
     if (!type) {
       type = DialogType.alert;
     }
@@ -32,14 +22,11 @@ export class AlertService {
     this.dialogs.next({ message, type, okCallback, cancelCallback, okLabel, cancelLabel, defaultValue });
   }
 
-
-
   showMessage(summary: string);
   showMessage(summary: string, detail: string, severity: MessageSeverity);
   showMessage(summaryAndDetails: string[], summaryAndDetailsSeparator: string, severity: MessageSeverity);
   showMessage(response: HttpResponseBase, ignoreValue_useNull: string, severity: MessageSeverity);
   showMessage(data: any, separatorOrDetail?: string, severity?: MessageSeverity) {
-
     if (!severity) {
       severity = MessageSeverity.default;
     }
@@ -60,14 +47,12 @@ export class AlertService {
     }
   }
 
-
   showStickyMessage(summary: string);
   showStickyMessage(summary: string, detail: string, severity: MessageSeverity, error?: any);
   showStickyMessage(summary: string, detail: string, severity: MessageSeverity, error?: any, onRemove?: () => any);
   showStickyMessage(summaryAndDetails: string[], summaryAndDetailsSeparator: string, severity: MessageSeverity);
   showStickyMessage(response: HttpResponseBase, ignoreValue_useNull: string, severity: MessageSeverity);
   showStickyMessage(data: string | string[] | HttpResponseBase, separatorOrDetail?: string, severity?: MessageSeverity, error?: any, onRemove?: () => any) {
-
     if (!severity) {
       severity = MessageSeverity.default;
     }
@@ -77,7 +62,6 @@ export class AlertService {
       separatorOrDetail = Utilities.captionAndMessageSeparator;
     }
 
-
     if (data instanceof Array) {
       for (const message of data) {
         const msgObject = Utilities.splitInTwo(message, separatorOrDetail);
@@ -85,9 +69,7 @@ export class AlertService {
         this.showMessageHelper(msgObject.firstPart, msgObject.secondPart, severity, true);
       }
     } else {
-
       if (error) {
-
         const msg = `Severity: "${MessageSeverity[severity]}", Summary: "${data}", Detail: "${separatorOrDetail}", Error: "${Utilities.safeStringify(error)}"`;
 
         switch (severity) {
@@ -117,7 +99,6 @@ export class AlertService {
   }
 
   private showMessageHelper(summary: string, detail: string, severity: MessageSeverity, isSticky: boolean, onRemove?: () => any) {
-
     const alertCommand: AlertCommand = {
       operation: isSticky ? 'add_sticky' : 'add',
       message: { severity, summary, detail },
@@ -143,8 +124,6 @@ export class AlertService {
     clearTimeout(this.loadingMessageTimeoutId);
     this.resetStickyMessage();
   }
-
-
 
   logDebug(msg) {
     console.debug(msg);
@@ -179,7 +158,6 @@ export class AlertService {
   }
 }
 
-
 // ******************** Dialog ********************//
 export class AlertDialog {
   constructor(
@@ -190,7 +168,6 @@ export class AlertDialog {
     public defaultValue: string,
     public okLabel: string,
     public cancelLabel: string) {
-
   }
 }
 
@@ -200,7 +177,6 @@ export enum DialogType {
   prompt
 }
 // ******************** End ********************//
-
 
 // ******************** Growls ********************//
 export class AlertCommand {

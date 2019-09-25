@@ -1,8 +1,3 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, DefaultUrlSerializer, UrlSerializer, UrlTree } from '@angular/router';
 
@@ -17,8 +12,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { Utilities } from './services/utilities';
-
-
 
 export class LowerCaseUrlSerializer extends DefaultUrlSerializer {
   parse(url: string): UrlTree {
@@ -40,7 +33,6 @@ export class LowerCaseUrlSerializer extends DefaultUrlSerializer {
   }
 }
 
-
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard], data: { title: 'Home' } },
   { path: 'login', component: LoginComponent, data: { title: 'Login' } },
@@ -52,7 +44,6 @@ const routes: Routes = [
   { path: 'home', redirectTo: '/', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent, data: { title: 'Page Not Found' } }
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

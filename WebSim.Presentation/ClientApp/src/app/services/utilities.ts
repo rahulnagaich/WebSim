@@ -1,8 +1,3 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { Injectable } from '@angular/core';
 import { HttpResponseBase, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
@@ -72,7 +67,6 @@ export class Utilities {
         const responseObject = this.getResponseBody(data);
 
         if (responseObject && (typeof responseObject === 'object' || responseObject instanceof Object)) {
-
           for (const key in responseObject) {
             if (key) {
               responses.push(`${key}${this.captionAndMessageSeparator} ${responseObject[key]}`);
@@ -143,7 +137,6 @@ export class Utilities {
 
     if (!seachInCaptionOnly) {
       for (const message of httpMessages) {
-
         if (message.toLowerCase().indexOf(searchString) != -1) {
           if (includeCaptionInResult) {
             return message;
@@ -202,7 +195,6 @@ export class Utilities {
   }
 
   public static getQueryParamsFromString(paramString: string) {
-
     if (!paramString) {
       return null;
     }
@@ -231,14 +223,12 @@ export class Utilities {
   }
 
   public static safeStringify(object) {
-
     let result: string;
 
     try {
       result = JSON.stringify(object);
       return result;
     } catch (error) {
-
     }
 
     const simpleObject = {};
@@ -308,7 +298,6 @@ export class Utilities {
   public static toLowerCase(items: string);
   public static toLowerCase(items: string[]);
   public static toLowerCase(items: any): string | string[] {
-
     if (items instanceof Array) {
       const loweredRoles: string[] = [];
 
@@ -343,7 +332,6 @@ export class Utilities {
   }
 
   public static printDateOnly(date: Date) {
-
     date = new Date(date);
 
     const dayNames = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
@@ -371,7 +359,6 @@ export class Utilities {
   }
 
   public static printTimeOnly(date: Date) {
-
     date = new Date(date);
 
     let period = '';
@@ -392,7 +379,6 @@ export class Utilities {
     }
 
     const timeString = hour + ':' + minute + ' ' + period;
-
 
     return timeString;
   }
@@ -417,7 +403,6 @@ export class Utilities {
   }
 
   public static printShortDate(date: Date, separator = '/', dateTimeSeparator = '-') {
-
     let day = date.getDate().toString();
     let month = (date.getMonth() + 1).toString();
     const year = date.getFullYear();
@@ -434,9 +419,7 @@ export class Utilities {
   }
 
   public static parseDate(date) {
-
     if (date) {
-
       if (date instanceof Date) {
         return date;
       }
@@ -456,7 +439,6 @@ export class Utilities {
   }
 
   public static printDuration(start: Date, end: Date) {
-
     start = new Date(start);
     end = new Date(end);
 
@@ -478,7 +460,6 @@ export class Utilities {
     // what's left is seconds
     const seconds = delta % 60;  // in theory the modulus is not required
 
-
     let printedDays = '';
 
     if (days) {
@@ -496,7 +477,6 @@ export class Utilities {
     if (seconds) {
       printedDays += printedDays ? ` and ${seconds} seconds` : `${seconds} seconds`;
     }
-
 
     if (!printedDays) {
       printedDays = '0';
@@ -536,7 +516,6 @@ export class Utilities {
   }
 
   public static moveArrayItem(array: any[], oldIndex, newIndex) {
-
     if (oldIndex < 0) {
       return;
     }
@@ -556,7 +535,6 @@ export class Utilities {
   }
 
   public static expandCamelCase(text: string) {
-
     if (!text) {
       return text;
     }
@@ -567,13 +545,11 @@ export class Utilities {
   }
 
   public static testIsAbsoluteUrl(url: string) {
-
     const r = new RegExp('^(?:[a-z]+:)?//', 'i');
     return r.test(url);
   }
 
   public static convertToAbsoluteUrl(url: string) {
-
     return Utilities.testIsAbsoluteUrl(url) ? url : '//' + url;
   }
 
@@ -598,11 +574,11 @@ export class Utilities {
   public static debounce(func: (...args) => any, wait: number, immediate?: boolean) {
     let timeout;
 
-    return function() {
+    return function () {
       const context = this;
       const args_ = arguments;
 
-      const later = function() {
+      const later = function () {
         timeout = null;
         if (!immediate) {
           func.apply(context, args_);

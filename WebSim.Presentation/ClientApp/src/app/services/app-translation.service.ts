@@ -1,17 +1,9 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { Injectable } from '@angular/core';
 import { TranslateService, TranslateLoader } from '@ngx-translate/core';
 import { Observable, Subject, of } from 'rxjs';
 
-
-
 @Injectable()
 export class AppTranslationService {
-
   private onLanguageChanged = new Subject<string>();
   languageChanged$ = this.onLanguageChanged.asObservable();
 
@@ -72,23 +64,17 @@ export class AppTranslationService {
     return language;
   }
 
-
   getTranslation(key: string | Array<string>, interpolateParams?: Object): string | any {
     return this.translate.instant(key, interpolateParams);
   }
 
-
   getTranslationAsync(key: string | Array<string>, interpolateParams?: Object): Observable<string | any> {
     return this.translate.get(key, interpolateParams);
   }
-
 }
 
-
 export class TranslateLanguageLoader implements TranslateLoader {
-
   public getTranslation(lang: string): any {
-
     // Note Dynamic require(variable) will not work. Require is always at compile time
 
     switch (lang) {

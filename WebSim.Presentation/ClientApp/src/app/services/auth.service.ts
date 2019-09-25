@@ -1,8 +1,3 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { Injectable } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { Observable, Subject, from, throwError } from 'rxjs';
@@ -41,7 +36,6 @@ export class AuthService {
     private oauthService: OAuthService,
     private configurations: ConfigurationService,
     private localStorage: LocalStoreManager) {
-
     this.initializeLoginStatus();
   }
 
@@ -52,7 +46,6 @@ export class AuthService {
   }
 
   gotoPage(page: string, preserveParams = true) {
-
     const navigationExtras: NavigationExtras = {
       queryParamsHandling: preserveParams ? 'merge' : '', preserveFragment: preserveParams
     };
@@ -134,9 +127,7 @@ export class AuthService {
     AuthStorage.RememberMe = rememberMe;
   }
 
-
   private processLoginResponse(accessToken: string, rememberMe: boolean) {
-
     if (accessToken == null) {
       throw new Error('accessToken cannot be null');
     }
@@ -207,7 +198,6 @@ export class AuthService {
   }
 
   get currentUser(): User {
-
     const user = this.localStorage.getDataObject<User>(DBkeys.CURRENT_USER);
     this.reevaluateLoginStatus(user);
 

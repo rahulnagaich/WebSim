@@ -1,8 +1,3 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { Component, OnInit, AfterViewInit, TemplateRef, ViewChild, Input } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
@@ -14,201 +9,178 @@ import { Role } from '../../models/role.model';
 import { Permission } from '../../models/permission.model';
 import { RoleEditorComponent } from './role-editor.component';
 
-
 @Component({
-    selector: 'roles-management',
-    templateUrl: './roles-management.component.html',
-    styleUrls: ['./roles-management.component.scss']
+  selector: 'roles-management',
+  templateUrl: './roles-management.component.html',
+  styleUrls: ['./roles-management.component.scss']
 })
 export class RolesManagementComponent implements OnInit, AfterViewInit {
-    columns: any[] = [];
-    rows: Role[] = [];
-    rowsCache: Role[] = [];
-    allPermissions: Permission[] = [];
-    editedRole: Role;
-    sourceRole: Role;
-    editingRoleName: { name: string };
-    loadingIndicator: boolean;
+  columns: any[] = [];
+  rows: Role[] = [];
+  rowsCache: Role[] = [];
+  allPermissions: Permission[] = [];
+  editedRole: Role;
+  sourceRole: Role;
+  editingRoleName: { name: string };
+  loadingIndicator: boolean;
 
+  @ViewChild('indexTemplate', { static: true })
+  indexTemplate: TemplateRef<any>;
 
+  @ViewChild('actionsTemplate', { static: true })
+  actionsTemplate: TemplateRef<any>;
 
-    @ViewChild('indexTemplate', { static: true })
-    indexTemplate: TemplateRef<any>;
+  @ViewChild('editorModal', { static: true })
+  editorModal: ModalDirective;
 
-    @ViewChild('actionsTemplate', { static: true })
-    actionsTemplate: TemplateRef<any>;
+  @ViewChild('roleEditor', { static: true })
+  roleEditor: RoleEditorComponent;
 
-    @ViewChild('editorModal', { static: true })
-    editorModal: ModalDirective;
+  constructor(private alertService: AlertService, private translationService: AppTranslationService, private accountService: AccountService) {
+  }
 
-    @ViewChild('roleEditor', { static: true })
-    roleEditor: RoleEditorComponent;
+  ngOnInit() {
+    const gT = (key: string) => this.translationService.getTranslation(key);
 
-    constructor(private alertService: AlertService, private translationService: AppTranslationService, private accountService: AccountService) {
-    }
+    this.columns = [
+      { prop: 'index', name: '#', width: 50, cellTemplate: this.indexTemplate, canAutoResize: false },
+      { prop: 'name', name: gT('roles.management.Name'), width: 180 },
+      { prop: 'description', name: gT('roles.management.Description'), width: 320 },
+      { prop: 'usersCount', name: gT('roles.management.Users'), width: 50 },
+      { name: '', width: 160, cellTemplate: this.actionsTemplate, resizeable: false, canAutoResize: false, sortable: false, draggable: false }
+    ];
 
+    this.loadData();
+  }
 
-    ngOnInit() {
+  ngAfterViewInit() {
+    this.roleEditor.changesSavedCallback = () => {
+      this.addNewRoleToList();
+      this.editorModal.hide();
+    };
 
-        const gT = (key: string) => this.translationService.getTranslation(key);
+    this.roleEditor.changesCancelledCallback = () => {
+      this.editedRole = null;
+      this.sourceRole = null;
+      this.editorModal.hide();
+    };
+  }
 
-        this.columns = [
-            { prop: 'index', name: '#', width: 50, cellTemplate: this.indexTemplate, canAutoResize: false },
-            { prop: 'name', name: gT('roles.management.Name'), width: 180 },
-            { prop: 'description', name: gT('roles.management.Description'), width: 320 },
-            { prop: 'usersCount', name: gT('roles.management.Users'), width: 50 },
-            { name: '', width: 160, cellTemplate: this.actionsTemplate, resizeable: false, canAutoResize: false, sortable: false, draggable: false }
-        ];
+  addNewRoleToList() {
+    if (this.sourceRole) {
+      Object.assign(this.sourceRole, this.editedRole);
 
-        this.loadData();
-    }
+      let sourceIndex = this.rowsCache.indexOf(this.sourceRole, 0);
+      if (sourceIndex > -1) {
+        Utilities.moveArrayItem(this.rowsCache, sourceIndex, 0);
+      }
 
+      sourceIndex = this.rows.indexOf(this.sourceRole, 0);
+      if (sourceIndex > -1) {
+        Utilities.moveArrayItem(this.rows, sourceIndex, 0);
+      }
 
+      this.editedRole = null;
+      this.sourceRole = null;
+    } else {
+      const role = new Role();
+      Object.assign(role, this.editedRole);
+      this.editedRole = null;
 
-
-
-    ngAfterViewInit() {
-
-        this.roleEditor.changesSavedCallback = () => {
-            this.addNewRoleToList();
-            this.editorModal.hide();
-        };
-
-        this.roleEditor.changesCancelledCallback = () => {
-            this.editedRole = null;
-            this.sourceRole = null;
-            this.editorModal.hide();
-        };
-    }
-
-
-    addNewRoleToList() {
-        if (this.sourceRole) {
-            Object.assign(this.sourceRole, this.editedRole);
-
-            let sourceIndex = this.rowsCache.indexOf(this.sourceRole, 0);
-            if (sourceIndex > -1) {
-                Utilities.moveArrayItem(this.rowsCache, sourceIndex, 0);
-            }
-
-            sourceIndex = this.rows.indexOf(this.sourceRole, 0);
-            if (sourceIndex > -1) {
-                Utilities.moveArrayItem(this.rows, sourceIndex, 0);
-            }
-
-            this.editedRole = null;
-            this.sourceRole = null;
-        } else {
-            const role = new Role();
-            Object.assign(role, this.editedRole);
-            this.editedRole = null;
-
-            let maxIndex = 0;
-            for (const r of this.rowsCache) {
-                if ((r as any).index > maxIndex) {
-                    maxIndex = (r as any).index;
-                }
-            }
-
-            (role as any).index = maxIndex + 1;
-
-            this.rowsCache.splice(0, 0, role);
-            this.rows.splice(0, 0, role);
-            this.rows = [...this.rows];
+      let maxIndex = 0;
+      for (const r of this.rowsCache) {
+        if ((r as any).index > maxIndex) {
+          maxIndex = (r as any).index;
         }
+      }
+
+      (role as any).index = maxIndex + 1;
+
+      this.rowsCache.splice(0, 0, role);
+      this.rows.splice(0, 0, role);
+      this.rows = [...this.rows];
     }
+  }
 
+  loadData() {
+    this.alertService.startLoadingMessage();
+    this.loadingIndicator = true;
 
+    this.accountService.getRolesAndPermissions()
+      .subscribe(results => {
+        this.alertService.stopLoadingMessage();
+        this.loadingIndicator = false;
 
+        const roles = results[0];
+        const permissions = results[1];
 
-    loadData() {
-        this.alertService.startLoadingMessage();
-        this.loadingIndicator = true;
+        roles.forEach((role, index, roles) => {
+          (role as any).index = index + 1;
+        });
 
-        this.accountService.getRolesAndPermissions()
-            .subscribe(results => {
-                this.alertService.stopLoadingMessage();
-                this.loadingIndicator = false;
+        this.rowsCache = [...roles];
+        this.rows = roles;
 
-                const roles = results[0];
-                const permissions = results[1];
+        this.allPermissions = permissions;
+      },
+        error => {
+          this.alertService.stopLoadingMessage();
+          this.loadingIndicator = false;
 
-                roles.forEach((role, index, roles) => {
-                    (role as any).index = index + 1;
-                });
+          this.alertService.showStickyMessage('Load Error', `Unable to retrieve roles from the server.\r\nErrors: "${Utilities.getHttpResponseMessages(error)}"`,
+            MessageSeverity.error, error);
+        });
+  }
 
+  onSearchChanged(value: string) {
+    this.rows = this.rowsCache.filter(r => Utilities.searchArray(value, false, r.name, r.description));
+  }
 
-                this.rowsCache = [...roles];
-                this.rows = roles;
+  onEditorModalHidden() {
+    this.editingRoleName = null;
+    this.roleEditor.resetForm(true);
+  }
 
-                this.allPermissions = permissions;
-            },
-            error => {
-                this.alertService.stopLoadingMessage();
-                this.loadingIndicator = false;
+  newRole() {
+    this.editingRoleName = null;
+    this.sourceRole = null;
+    this.editedRole = this.roleEditor.newRole(this.allPermissions);
+    this.editorModal.show();
+  }
 
-                this.alertService.showStickyMessage('Load Error', `Unable to retrieve roles from the server.\r\nErrors: "${Utilities.getHttpResponseMessages(error)}"`,
-                    MessageSeverity.error, error);
-            });
-    }
+  editRole(row: Role) {
+    this.editingRoleName = { name: row.name };
+    this.sourceRole = row;
+    this.editedRole = this.roleEditor.editRole(row, this.allPermissions);
+    this.editorModal.show();
+  }
 
+  deleteRole(row: Role) {
+    this.alertService.showDialog('Are you sure you want to delete the \"' + row.name + '\" role?', DialogType.confirm, () => this.deleteRoleHelper(row));
+  }
 
-    onSearchChanged(value: string) {
-        this.rows = this.rowsCache.filter(r => Utilities.searchArray(value, false, r.name, r.description));
-    }
+  deleteRoleHelper(row: Role) {
+    this.alertService.startLoadingMessage('Deleting...');
+    this.loadingIndicator = true;
 
+    this.accountService.deleteRole(row)
+      .subscribe(results => {
+        this.alertService.stopLoadingMessage();
+        this.loadingIndicator = false;
 
-    onEditorModalHidden() {
-        this.editingRoleName = null;
-        this.roleEditor.resetForm(true);
-    }
+        this.rowsCache = this.rowsCache.filter(item => item !== row);
+        this.rows = this.rows.filter(item => item !== row);
+      },
+        error => {
+          this.alertService.stopLoadingMessage();
+          this.loadingIndicator = false;
 
+          this.alertService.showStickyMessage('Delete Error', `An error occured whilst deleting the role.\r\nError: "${Utilities.getHttpResponseMessages(error)}"`,
+            MessageSeverity.error, error);
+        });
+  }
 
-    newRole() {
-        this.editingRoleName = null;
-        this.sourceRole = null;
-        this.editedRole = this.roleEditor.newRole(this.allPermissions);
-        this.editorModal.show();
-    }
-
-
-    editRole(row: Role) {
-        this.editingRoleName = { name: row.name };
-        this.sourceRole = row;
-        this.editedRole = this.roleEditor.editRole(row, this.allPermissions);
-        this.editorModal.show();
-    }
-
-    deleteRole(row: Role) {
-        this.alertService.showDialog('Are you sure you want to delete the \"' + row.name + '\" role?', DialogType.confirm, () => this.deleteRoleHelper(row));
-    }
-
-
-    deleteRoleHelper(row: Role) {
-
-        this.alertService.startLoadingMessage('Deleting...');
-        this.loadingIndicator = true;
-
-        this.accountService.deleteRole(row)
-            .subscribe(results => {
-                this.alertService.stopLoadingMessage();
-                this.loadingIndicator = false;
-
-                this.rowsCache = this.rowsCache.filter(item => item !== row);
-                this.rows = this.rows.filter(item => item !== row);
-            },
-            error => {
-                this.alertService.stopLoadingMessage();
-                this.loadingIndicator = false;
-
-                this.alertService.showStickyMessage('Delete Error', `An error occured whilst deleting the role.\r\nError: "${Utilities.getHttpResponseMessages(error)}"`,
-                    MessageSeverity.error, error);
-            });
-    }
-
-
-    get canManageRoles() {
-        return this.accountService.userHasPermission(Permission.manageRolesPermission);
-    }
-
+  get canManageRoles() {
+    return this.accountService.userHasPermission(Permission.manageRolesPermission);
+  }
 }

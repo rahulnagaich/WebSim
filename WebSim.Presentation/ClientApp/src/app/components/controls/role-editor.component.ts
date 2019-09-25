@@ -1,8 +1,3 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
-
 import { Component, ViewChild } from '@angular/core';
 
 import { AlertService, MessageSeverity } from '../../services/alert.service';
@@ -10,14 +5,12 @@ import { AccountService } from '../../services/account.service';
 import { Role } from '../../models/role.model';
 import { Permission } from '../../models/permission.model';
 
-
 @Component({
   selector: 'role-editor',
   templateUrl: './role-editor.component.html',
   styleUrls: ['./role-editor.component.scss']
 })
 export class RoleEditorComponent {
-
   private isNewRole = false;
   public isSaving: boolean;
   public showValidationErrors = true;
@@ -32,21 +25,15 @@ export class RoleEditorComponent {
   public changesFailedCallback: () => void;
   public changesCancelledCallback: () => void;
 
-
   @ViewChild('f', { static: false })
   private form;
-
-
 
   constructor(private alertService: AlertService, private accountService: AccountService) {
   }
 
-
-
   showErrorAlert(caption: string, message: string) {
     this.alertService.showMessage(caption, message, MessageSeverity.error);
   }
-
 
   save() {
     this.isSaving = true;
@@ -60,9 +47,6 @@ export class RoleEditorComponent {
       this.accountService.updateRole(this.roleEdit).subscribe(response => this.saveSuccessHelper(), error => this.saveFailedHelper(error));
     }
   }
-
-
-
 
   private saveSuccessHelper(role?: Role) {
     if (role) {
@@ -79,10 +63,8 @@ export class RoleEditorComponent {
       this.alertService.showMessage('Success', `Changes to role \"${this.roleEdit.name}\" was saved successfully`, MessageSeverity.success);
     }
 
-
     this.roleEdit = new Role();
     this.resetForm();
-
 
     if (!this.isNewRole && this.accountService.currentUser.roles.some(r => r == this.editingRoleName)) {
       this.refreshLoggedInUser();
@@ -93,7 +75,6 @@ export class RoleEditorComponent {
     }
   }
 
-
   private refreshLoggedInUser() {
     this.accountService.refreshLoggedInUser()
       .subscribe(user => { },
@@ -102,8 +83,6 @@ export class RoleEditorComponent {
           this.alertService.showStickyMessage('Refresh failed', 'An error occured whilst refreshing logged in user information from the server', MessageSeverity.error, error);
         });
   }
-
-
 
   private saveFailedHelper(error: any) {
     this.isSaving = false;
@@ -115,7 +94,6 @@ export class RoleEditorComponent {
       this.changesFailedCallback();
     }
   }
-
 
   cancel() {
     this.roleEdit = new Role();
@@ -131,17 +109,13 @@ export class RoleEditorComponent {
     }
   }
 
-
-
   selectAll() {
     this.allPermissions.forEach(p => this.selectedValues[p.value] = true);
   }
 
-
   selectNone() {
     this.allPermissions.forEach(p => this.selectedValues[p.value] = false);
   }
-
 
   toggleGroup(groupName: string) {
     let firstMemberValue: boolean;
@@ -159,14 +133,11 @@ export class RoleEditorComponent {
     });
   }
 
-
   private getSelectedPermissions() {
     return this.allPermissions.filter(p => this.selectedValues[p.value] == true);
   }
 
-
   resetForm(replace = false) {
-
     if (!replace) {
       this.form.reset();
     } else {
@@ -177,7 +148,6 @@ export class RoleEditorComponent {
       });
     }
   }
-
 
   newRole(allPermissions: Permission[]) {
     this.isNewRole = true;
@@ -208,8 +178,6 @@ export class RoleEditorComponent {
       return this.newRole(allPermissions);
     }
   }
-
-
 
   get canManageRoles() {
     return this.accountService.userHasPermission(Permission.manageRolesPermission);
