@@ -1,3 +1,8 @@
+// =============================
+// Email: info@ebenmonney.com
+// www.ebenmonney.com/templates
+// =============================
+
 import { browser, by, element } from 'protractor';
 
 export class AppPage {
@@ -5,7 +10,7 @@ export class AppPage {
     return browser.get(browser.baseUrl) as Promise<any>;
   }
 
-  getTitleText() {
-    return element(by.css('app-root h1')).getText() as Promise<string>;
+  getAppTitle() {
+    return element(by.css('app-root .appTitle')).getText() as Promise<string>;
   }
 }
