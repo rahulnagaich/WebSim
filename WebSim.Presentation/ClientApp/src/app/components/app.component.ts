@@ -34,8 +34,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   shouldShowLoginModal: boolean;
   removePrebootScreen: boolean;
   newNotificationCount = 0;
-  appTitle = 'QuickApp';
-  appLogo = require('../assets/images/logo-white.png');
+  appTitle = 'WebSim';
+  // appLogo = require('../assets/images/logo-white.png');
+  appLogo = require('../assets/images/logo_q1.png');
 
   stickyToasties: number[] = [];
 
