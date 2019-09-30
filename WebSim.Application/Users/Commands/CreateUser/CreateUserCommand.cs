@@ -41,7 +41,7 @@ namespace WebSim.Application.Users.Commands.CreateUser
 
             var user = _factory.Create(email, firstname, lastname, resetPassword, securityStamp, passwordHash, createdBy, createdOn);
 
-            _databaseService.Users.Add(user);
+            //_databaseService.Users.Add(user);
 
             //if (model.Roles.Count > 0 && model.Roles != null)
             //{
