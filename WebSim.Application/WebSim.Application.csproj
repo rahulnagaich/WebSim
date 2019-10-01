@@ -11,7 +11,10 @@
   <ItemGroup>
     <ProjectReference Include="..\WebSim.Common\WebSim.Common.csproj" />
     <ProjectReference Include="..\WebSim.Domain\WebSim.Domain.csproj" />
-    <ProjectReference Include="..\WebSim.Persistence\WebSim.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Customers\" />
   </ItemGroup>
 
 </Project>

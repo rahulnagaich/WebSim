@@ -8,8 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StructureMap;
 using System;
-using WebSim.Domain.ApplicationRoles;
-using WebSim.Domain.ApplicationUsers;
+using WebSim.Domain.CoreIdentity;
 using WebSim.Persistence;
 
 namespace WebSim.Presentation
@@ -25,7 +24,7 @@ namespace WebSim.Presentation
 
         private IHostingEnvironment _env { get; }
         public IConfiguration Configuration { get; }
-        
+
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             _env = env;

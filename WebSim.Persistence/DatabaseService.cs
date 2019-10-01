@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -6,15 +7,19 @@ using System.Threading;
 using System.Threading.Tasks;
 
 //using WebSim.Application.Interfaces;
-using WebSim.Domain.ApplicationRoles;
-using WebSim.Domain.ApplicationUsers;
 using WebSim.Domain.Common;
-using WebSim.Persistence.ApplicationRoles;
-using WebSim.Persistence.ApplicationUsers;
+using WebSim.Domain.CoreIdentity;
+using WebSim.Domain.Customers;
+using WebSim.Domain.Orders;
+using WebSim.Domain.Products;
+using WebSim.Persistence.CoreIdentity;
+using WebSim.Persistence.Customers;
+using WebSim.Persistence.Orders;
+using WebSim.Persistence.Products;
 
 namespace WebSim.Persistence
 {
-    public class DatabaseService : IdentityDbContext<ApplicationUser, ApplicationRole, string> /*DbContext, IDatabaseService*/
+    public class DatabaseService : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public DatabaseService(DbContextOptions<DatabaseService> options) : base(options)
         {
@@ -22,21 +27,30 @@ namespace WebSim.Persistence
 
         public string CurrentUserId { get; set; }
 
-        // public DbSet<User> Users { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            //modelBuilder.ApplyConfiguration(new UserConfiguration());
-
             modelBuilder.ApplyConfiguration(new ApplicationUserConfiguration());
             modelBuilder.ApplyConfiguration(new ApplicationRoleConfiguration());
-            modelBuilder.ApplyConfiguration(new ApplicationUserRoleConfiguration());
-            modelBuilder.ApplyConfiguration(new ApplicationRoleClaimConfiguration());
-            modelBuilder.ApplyConfiguration(new ApplicationUserClaimConfiguration());
-            modelBuilder.ApplyConfiguration(new ApplicationUserLoginConfiguration());
-            modelBuilder.ApplyConfiguration(new ApplicationUserTokenConfiguration());
+
+            modelBuilder.Entity<IdentityUserRole<string>>(entity => { entity.ToTable(name: "ApplicationUserRoles"); });
+            modelBuilder.Entity<IdentityRoleClaim<string>>(entity => { entity.ToTable(name: "ApplicationRoleClaims"); });
+            modelBuilder.Entity<IdentityUserClaim<string>>(entity => { entity.ToTable(name: "ApplicationUserClaims"); });
+            modelBuilder.Entity<IdentityUserLogin<string>>(entity => { entity.ToTable(name: "ApplicationUserLogins"); });
+            modelBuilder.Entity<IdentityUserToken<string>>(entity => { entity.ToTable(name: "ApplicationUserTokens"); });
+
+            modelBuilder.ApplyConfiguration(new CustomerConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductCategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderDetailConfiguration());
         }
 
         public int Save()

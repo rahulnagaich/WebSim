@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebSim.Domain.ApplicationRoles;
-using WebSim.Domain.ApplicationUsers;
+using WebSim.Domain.CoreIdentity;
 
 namespace WebSim.Application.Interfaces
 {

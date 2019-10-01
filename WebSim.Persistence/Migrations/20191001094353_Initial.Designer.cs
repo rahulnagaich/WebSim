@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebSim.Persistence;
 
 namespace WebSim.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseService))]
-    partial class DatabaseServiceModelSnapshot : ModelSnapshot
+    [Migration("20191001094353_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,219 +208,6 @@ namespace WebSim.Persistence.Migrations
                     b.ToTable("ApplicationUsers");
                 });
 
-            modelBuilder.Entity("WebSim.Domain.Customers.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address");
-
-                    b.Property<string>("City")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(256);
-
-                    b.Property<DateTime>("CreatedDate");
-
-                    b.Property<DateTime>("DateCreated");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("Gender");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(30)
-                        .IsUnicode(false);
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(256);
-
-                    b.Property<DateTime>("UpdatedDate");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name");
-
-                    b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("WebSim.Domain.Orders.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CashierId");
-
-                    b.Property<string>("Comments")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(256);
-
-                    b.Property<DateTime>("CreatedDate");
-
-                    b.Property<int>("CustomerId");
-
-                    b.Property<DateTime>("DateCreated");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(256);
-
-                    b.Property<DateTime>("UpdatedDate");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CashierId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("WebSim.Domain.Orders.OrderDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(256);
-
-                    b.Property<DateTime>("CreatedDate");
-
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("OrderId");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<int>("Quantity");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(256);
-
-                    b.Property<DateTime>("UpdatedDate");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderDetails");
-                });
-
-            modelBuilder.Entity("WebSim.Domain.Products.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("BuyingPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(256);
-
-                    b.Property<DateTime>("CreatedDate");
-
-                    b.Property<DateTime>("DateCreated");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("Icon")
-                        .HasMaxLength(256)
-                        .IsUnicode(false);
-
-                    b.Property<bool>("IsActive");
-
-                    b.Property<bool>("IsDiscontinued");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<int?>("ParentId");
-
-                    b.Property<int>("ProductCategoryId");
-
-                    b.Property<decimal>("SellingPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("UnitsInStock");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(256);
-
-                    b.Property<DateTime>("UpdatedDate");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name");
-
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("ProductCategoryId");
-
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("WebSim.Domain.Products.ProductCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(256);
-
-                    b.Property<DateTime>("CreatedDate");
-
-                    b.Property<DateTime>("DateCreated");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("Icon");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(256);
-
-                    b.Property<DateTime>("UpdatedDate");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductCategories");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("WebSim.Domain.CoreIdentity.ApplicationRole")
@@ -461,44 +250,6 @@ namespace WebSim.Persistence.Migrations
                     b.HasOne("WebSim.Domain.CoreIdentity.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("WebSim.Domain.Orders.Order", b =>
-                {
-                    b.HasOne("WebSim.Domain.CoreIdentity.ApplicationUser", "Cashier")
-                        .WithMany()
-                        .HasForeignKey("CashierId");
-
-                    b.HasOne("WebSim.Domain.Customers.Customer", "Customer")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("WebSim.Domain.Orders.OrderDetail", b =>
-                {
-                    b.HasOne("WebSim.Domain.Orders.Order", "Order")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("WebSim.Domain.Products.Product", "Product")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("WebSim.Domain.Products.Product", b =>
-                {
-                    b.HasOne("WebSim.Domain.Products.Product", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("WebSim.Domain.Products.ProductCategory", "ProductCategory")
-                        .WithMany("Products")
-                        .HasForeignKey("ProductCategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
